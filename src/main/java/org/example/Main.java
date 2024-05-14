@@ -27,6 +27,8 @@ public class Main {
 
                 facultadEscuela(document);
 
+                datosBasicosModulo(document);
+
             document.close();
             fos.close();
 
@@ -61,6 +63,58 @@ public class Main {
         parrafoEscu.setAlignment(Element.ALIGN_CENTER); // Alineación centrada
         document.add(parrafoEscu);
     }
+    public static void datosBasicosModulo(Document document) throws DocumentException {
+
+        //Cuanto mide la hoja
+        document.add(new Paragraph("  "));
+        float pageWidth = document.getPageSize().getWidth();
+        float pageHeight = document.getPageSize().getHeight();
+
+        //creacion de la tabla
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(80); // Ancho de la tabla (en porcentaje del ancho de la página)
+        table.setTotalWidth(pageWidth * 0.8f); // Ancho de la tabla (en puntos)
+        table.setLockedWidth(true); // Bloquear el ancho de la tabla
+
+        float[] columnWidths = {1, 2};
+        table.setWidths(columnWidths);
+
+
+        //agregar celdas a la tabla
+        PdfPCell cell1 =  new PdfPCell(new Phrase("     I.                  DATOS BÁSICOS DEL MODULO", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD, BaseColor.WHITE)));
+
+        PdfPCell cell2 =  new PdfPCell(new Phrase("NOMBRE MODULO", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+        PdfPCell cell3 =  new PdfPCell(new Phrase("Medios de Transmisión", FontFactory.getFont("Gill Sans MT", 9)));
+
+        PdfPCell cell4 =  new PdfPCell(new Phrase("CÓDIGO DEL MODULO", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+        PdfPCell cell5 =  new PdfPCell(new Phrase("TIC49999", FontFactory.getFont("Gill Sans MT", 9)));
+
+
+
+        // Configurar celdas
+        cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+
+        //Unificar celdas
+        cell1.setColspan(2);
+        BaseColor color = new BaseColor(16,52,92);
+        cell1.setBackgroundColor(color);
+
+        //
+        // Agregar celdas a la tabla
+        table.addCell(cell1);
+        table.addCell(cell2);
+        table.addCell(cell3);
+        table.addCell(cell4);
+        table.addCell(cell5);
+
+
+        document.add(table);
+    }
 
 }
 
@@ -70,7 +124,7 @@ class EncabezadoDos extends PdfPageEventHelper {
     public void onEndPage(PdfWriter writer, Document document) {
         try {
             // Configurar imagen para el encabezado
-            Image imagenEncabezado = Image.getInstance("D:\\Proyectos Java\\CreadordePdfDos\\img\\logo.png"); // Ruta a la imagen
+            Image imagenEncabezado = Image.getInstance("D:\\Proyectos Java\\CreadordePdfDos\\pdf\\img\\logo.png"); // Ruta a la imagen
             imagenEncabezado.scaleToFit(100, 100); // Escalar la imagen
 
 
