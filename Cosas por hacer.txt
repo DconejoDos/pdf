@@ -1,0 +1,5 @@
+revisar si se puede hacer los chunk en la tabla del encabezado
+
+hacer el resto del pdf general
+
+conexion a la base de datos

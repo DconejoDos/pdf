@@ -1,0 +1,316 @@
+/*
+            document.add(new com.itextpdf.text.Paragraph("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim nec diam suscipit facilisis non non justo. Morbi viverra, magna quis commodo elementum, ligula est luctus sem, sit amet pharetra ipsum magna sed velit. Nulla in fringilla neque, ornare hendrerit nunc. Suspendisse at congue est. Nunc nec vulputate eros. Nulla iaculis, felis vel mattis aliquam, lectus turpis bibendum turpis, et tempus lectus tortor vestibulum massa. Etiam rhoncus ex fringilla, venenatis nulla et, eleifend massa. Maecenas laoreet suscipit ante, sed fringilla nibh lobortis non. Mauris ac dolor dolor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi massa ipsum, auctor id augue vel, venenatis hendrerit ipsum. Nulla risus nisl, convallis ut mattis nec, lacinia vel urna. Nam fringilla orci egestas magna fringilla, sit amet ultrices tortor rhoncus. Phasellus a mi id quam rhoncus hendrerit. Vestibulum hendrerit turpis sed turpis facilisis ornare. Etiam imperdiet, elit quis iaculis faucibus, urna mauris gravida felis, nec viverra odio lacus a nulla.\n" +
+                    "\n" +
+                    "Duis aliquam neque iaculis dolor laoreet, nec laoreet diam vestibulum. Cras vitae laoreet enim. Quisque ornare consectetur sem eu tristique. Donec auctor ut lacus quis iaculis. Ut eu feugiat felis. Nunc efficitur lectus risus, ut varius sapien efficitur nec. Nam maximus congue libero mattis vulputate. Fusce sit amet nulla id nunc tempus congue id ut leo. Aliquam venenatis in leo sed commodo. Aliquam dui arcu, ullamcorper ut nibh eget, posuere mattis nisi. Nam arcu mi, pharetra vitae pharetra quis, euismod at diam. Aenean mollis urna elit, et mattis neque tristique ac. Etiam non imperdiet dui.\n" +
+                    "\n" +
+                    "Cras molestie turpis nec metus fringilla, eu feugiat nibh tincidunt. Nam eu fermentum lacus, id lacinia velit. Sed scelerisque, leo a sodales laoreet, ex urna hendrerit mi, eget congue odio magna sed dolor. Sed tincidunt rhoncus suscipit. Maecenas eget magna nulla. Nunc tempor rutrum mauris, nec ultricies risus vulputate a. Nam quis interdum dui. Donec sollicitudin congue scelerisque.\n" +
+                    "\n"+"esent porttitor blandit odio, commodo interdum erat ultrices ut. Duis quis ultricies nisl. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque tortor lorem, congue sit amet purus a, finibus tempor neque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean sapien tortor, tincidunt et tincidunt dapibus, sollicitudin sed ante. Praesent euismod, turpis vitae cursus tempor, tortor tellus fringilla ex, et vulputate risus nisi at metus. Pellentesque tempor varius turpis, id sodales nibh posuere ut. Etiam sit amet tortor pretium, placerat libero vitae, blandit mauris. Nullam sit amet tortor vitae lorem egestas elementum nec et ligula. Suspendisse varius nulla eu mattis molestie. Vestibulum et tempus tortor, ac molestie velit. Etiam a tortor sit amet lectus vulputate fringilla ac sit amet enim. Ut vel orci quam. Phasellus efficitur purus ac orci lacinia placerat."));
+*/
+
+/*
+
+             // Implementar la marca de agua
+            MarcaAgua event = new MarcaAgua();
+            writer.setPageEvent(event);
+ */
+class MarcaAgua extends com.itextpdf.text.pdf.PdfPageEventHelper {
+
+    @Override
+    public void onStartPage(com.itextpdf.text.pdf.PdfWriter writer, com.itextpdf.text.Document document) {
+        try {
+            Image watermarkImage = Image.getInstance("D:\\Proyectos Java\\CreadordePdfDos\\img\\logo.png"); // Ruta a la imagen
+
+            watermarkImage.scaleToFit(100, 100); //Tamaño de la imagen
+
+
+            //opacidad
+            PdfGState gs = new PdfGState();
+            gs.setFillOpacity(0.5f); // Opacidad al 50%
+            PdfContentByte und = writer.getDirectContentUnder();
+            und.setGState(gs);
+
+            //Cuanto mide la hoja
+            float pageWidth = document.getPageSize().getWidth();
+            float pageHeight = document.getPageSize().getHeight();
+
+            //Cuanto mide la imagen
+            float imageWidth = watermarkImage.getScaledWidth();
+            float imageHeight = watermarkImage.getScaledHeight();
+
+            //Calcular posicion imagen
+            float positionX = 40;
+            float positionY = pageHeight - imageHeight;
+            System.out.println(positionY);
+
+            //Ubicar la imagen
+            watermarkImage.setAbsolutePosition((pageWidth-imageWidth)/2,  pageHeight - imageHeight - 20);
+            PdfContentByte under = writer.getDirectContentUnder();
+            under.addImage(watermarkImage);
+
+            //Crear la tabla
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(80); // Ancho de la tabla (en porcentaje del ancho de la página)
+            table.setTotalWidth(pageWidth * 0.8f); // Ancho de la tabla (en puntos)
+            table.setLockedWidth(true); // Bloquear el ancho de la tabla
+
+            float[] columnWidths = {1, 2, 1}; // las col 1 y 3 tienen el mismo ancho, Columna 2 tiene el doble
+            table.setWidths(columnWidths);
+
+            // Agregar celdas a la tabla
+            PdfPCell cell1 = new PdfPCell(new Phrase("PROCESO:"+"\n"+"Diseño y Desarrollo de Programas Académicos",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell2 = new PdfPCell(new Phrase("FORMATO",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell3 = new PdfPCell(new Phrase("Código: " + "JD-RG-002",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell5 = new PdfPCell(new Phrase("SÍLABO DE MÓDULOS PREGRADO Y POSGRADO \n" +"MODALIDAD VIRTUALSx", FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell6 = new PdfPCell(new Phrase("Versión: 4", FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+
+            // Configurar celdas
+            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell6.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Ajustar celda 1 para abarcar dos filas
+            cell1.setRowspan(2);
+            // Configurar bordes de las celdas
+            cell1.setBorderColor(BaseColor.GRAY);
+            cell2.setBorderColor(BaseColor.GRAY);
+            cell3.setBorderColor(BaseColor.GRAY);
+            cell5.setBorderColor(BaseColor.GRAY);
+            cell6.setBorderColor(BaseColor.GRAY);
+
+            // Agregar celdas a la tabla
+            table.addCell(cell1);
+            table.addCell(cell2);
+            table.addCell(cell3);
+            table.addCell(cell5);
+            table.addCell(cell6);
+
+
+
+            // Posicionar la tabla debajo de la imagen
+            float tablePosY = positionY - table.getTotalHeight()+20;
+            table.writeSelectedRows(0, -1, (pageWidth - table.getTotalWidth()) / 2, tablePosY, writer.getDirectContent());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+
+
+class MarcaAgua extends com.itextpdf.text.pdf.PdfPageEventHelper {
+
+    @Override
+    public void onStartPage(com.itextpdf.text.pdf.PdfWriter writer, com.itextpdf.text.Document document) {
+        try {
+            Image watermarkImage = Image.getInstance("D:\\Proyectos Java\\CreadordePdfDos\\img\\logo.png"); // Ruta a la imagen
+
+            watermarkImage.scaleToFit(100, 100); //Tamaño de la imagen
+
+
+            //opacidad
+            PdfGState gs = new PdfGState();
+            gs.setFillOpacity(0.5f); // Opacidad al 50%
+            PdfContentByte und = writer.getDirectContentUnder();
+            und.setGState(gs);
+
+            //Cuanto mide la hoja
+            float pageWidth = document.getPageSize().getWidth();
+            float pageHeight = document.getPageSize().getHeight();
+
+            //Cuanto mide la imagen
+            float imageWidth = watermarkImage.getScaledWidth();
+            float imageHeight = watermarkImage.getScaledHeight();
+
+            //Calcular posicion imagen
+            float positionX = 40;
+            float positionY = pageHeight - imageHeight;
+            System.out.println(positionY);
+
+            //Ubicar la imagen
+            watermarkImage.setAbsolutePosition((pageWidth-imageWidth)/2,  pageHeight - imageHeight - 20);
+            PdfContentByte under = writer.getDirectContentUnder();
+            under.addImage(watermarkImage);
+
+            //Crear la tabla
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(80); // Ancho de la tabla (en porcentaje del ancho de la página)
+            table.setTotalWidth(pageWidth * 0.8f); // Ancho de la tabla (en puntos)
+            table.setLockedWidth(true); // Bloquear el ancho de la tabla
+
+            float[] columnWidths = {1, 2, 1}; // las col 1 y 3 tienen el mismo ancho, Columna 2 tiene el doble
+            table.setWidths(columnWidths);
+
+            // Agregar celdas a la tabla
+            PdfPCell cell1 = new PdfPCell(new Phrase("PROCESO:"+"\n"+"Diseño y Desarrollo de Programas Académicos",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell2 = new PdfPCell(new Phrase("FORMATO",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell3 = new PdfPCell(new Phrase("Código: " + "JD-RG-002",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell5 = new PdfPCell(new Phrase("SÍLABO DE MÓDULOS PREGRADO Y POSGRADO \n" +"MODALIDAD VIRTUALSx", FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell6 = new PdfPCell(new Phrase("Versión: 4", FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+
+            // Configurar celdas
+            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell6.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Ajustar celda 1 para abarcar dos filas
+            cell1.setRowspan(2);
+            // Configurar bordes de las celdas
+            cell1.setBorderColor(BaseColor.GRAY);
+            cell2.setBorderColor(BaseColor.GRAY);
+            cell3.setBorderColor(BaseColor.GRAY);
+            cell5.setBorderColor(BaseColor.GRAY);
+            cell6.setBorderColor(BaseColor.GRAY);
+
+            // Agregar celdas a la tabla
+            table.addCell(cell1);
+            table.addCell(cell2);
+            table.addCell(cell3);
+            table.addCell(cell5);
+            table.addCell(cell6);
+
+
+
+            // Posicionar la tabla debajo de la imagen
+            float tablePosY = positionY - table.getTotalHeight()+20;
+            table.writeSelectedRows(0, -1, (pageWidth - table.getTotalWidth()) / 2, tablePosY, writer.getDirectContent());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+package org.example;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Main {
+    public static void main(String[] args) {
+        Document document = new Document(PageSize.A4, 36, 36, 100, 36); // Establecer márgenes
+        try {
+            FileOutputStream fos = new FileOutputStream("documento_con_encabezado.pdf");
+            PdfWriter writer = PdfWriter.getInstance(document, fos);
+
+            // Establecer el evento del encabezado
+            EncabezadoDos encabezado = new EncabezadoDos();
+            writer.setPageEvent(encabezado);
+
+            document.open();
+
+            // Agregar contenido al documento
+            for (int i = 0; i < 50; i++) {
+                document.add(new Paragraph("lorem ipsum"));
+            }
+
+            // Cerrar el documento
+            document.close();
+            fos.close();
+
+            System.out.println("PDF creado o modificado");
+
+        } catch (FileNotFoundException | DocumentException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error al crear o modificar el PDF");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
+class EncabezadoDos extends PdfPageEventHelper {
+    public void onEndPage(PdfWriter writer, Document document) {
+        try {
+            // Configurar imagen para el encabezado
+            Image imagenEncabezado = Image.getInstance("D:\\Proyectos Java\\CreadordePdfDos\\img\\logo.png"); // Ruta a la imagen
+            imagenEncabezado.scaleToFit(100, 100); // Escalar la imagen
+
+            // Configurar tabla para el encabezado
+            PdfPTable tablaEncabezado = new PdfPTable(3);
+            tablaEncabezado.setWidthPercentage(50); // Ancho de la tabla (en porcentaje del ancho de la página)
+            tablaEncabezado.setTotalWidth(document.getPageSize().getWidth() * 0.5f); // Ancho de la tabla (en puntos)
+            tablaEncabezado.setLockedWidth(true); // Bloquear el ancho de la tabla
+
+            // Anchuras de las celdas
+            float[] columnWidths = {1, 2, 1}; // Columnas 1 y 3 tienen el mismo ancho, Columna 2 tiene el doble
+            tablaEncabezado.setWidths(columnWidths);
+
+            // Agregar celdas a la tabla
+            PdfPCell cell1 = new PdfPCell(imagenEncabezado);
+            PdfPCell cell2 = new PdfPCell(new Phrase("Columna 2", FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell3 = new PdfPCell(); // Columna 3 vacía
+
+            // Configurar celdas
+            cell1.setBorder(Rectangle.NO_BORDER);
+            cell2.setBorder(Rectangle.NO_BORDER);
+            cell3.setBorder(Rectangle.NO_BORDER);
+            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+            // Ajustar celda 1 para abarcar dos filas
+            cell1.setRowspan(2);
+
+            // Agregar celdas a la tabla
+            tablaEncabezado.addCell(cell1);
+            tablaEncabezado.addCell(cell2);
+            tablaEncabezado.addCell(cell3);
+
+            // Posicionar la tabla debajo de la imagen
+            float positionY = document.top() - imagenEncabezado.getScaledHeight() - 10; // 10 es un margen
+            tablaEncabezado.writeSelectedRows(0, -1, 0, positionY, writer.getDirectContent());
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+//Crear la tabla
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(80); // Ancho de la tabla (en porcentaje del ancho de la página)
+            table.setTotalWidth(pageWidth * 0.8f); // Ancho de la tabla (en puntos)
+            table.setLockedWidth(true); // Bloquear el ancho de la tabla
+
+            float[] columnWidths = {1, 2, 1}; // las col 1 y 3 tienen el mismo ancho, Columna 2 tiene el doble
+            table.setWidths(columnWidths);
+
+            // Agregar celdas a la tabla
+            PdfPCell cell1 = new PdfPCell(new Phrase("PROCESO:"+"\n"+"Diseño y Desarrollo de Programas Académicos",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell2 = new PdfPCell(new Phrase("FORMATO",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell3 = new PdfPCell(new Phrase("Código: " + "JD-RG-002",FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell5 = new PdfPCell(new Phrase("SÍLABO DE MÓDULOS PREGRADO Y POSGRADO \n" +"MODALIDAD VIRTUALSx", FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+            PdfPCell cell6 = new PdfPCell(new Phrase("Versión: 4", FontFactory.getFont("Gill Sans MT", 10, Font.BOLD, BaseColor.GRAY)));
+
+            // Configurar celdas
+            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell6.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Ajustar celda 1 para abarcar dos filas
+            cell1.setRowspan(2);
+            // Configurar bordes de las celdas
+            cell1.setBorderColor(BaseColor.GRAY);
+            cell2.setBorderColor(BaseColor.GRAY);
+            cell3.setBorderColor(BaseColor.GRAY);
+            cell5.setBorderColor(BaseColor.GRAY);
+            cell6.setBorderColor(BaseColor.GRAY);
+
+            // Agregar celdas a la tabla
+            table.addCell(cell1);
+            table.addCell(cell2);
+            table.addCell(cell3);
+            table.addCell(cell5);
+            table.addCell(cell6);
+
