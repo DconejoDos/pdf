@@ -314,3 +314,52 @@ class EncabezadoDos extends PdfPageEventHelper {
             table.addCell(cell5);
             table.addCell(cell6);
 
+
+
+//Creador de celdas
+
+             PdfPCell cell2 =  new PdfPCell(new Phrase("NOMBRE MODULO", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+                    PdfPCell cell3 =  new PdfPCell(new Phrase("Medios de Transmisión", FontFactory.getFont("Gill Sans MT", 9)));
+
+                    PdfPCell cell4 =  new PdfPCell(new Phrase("CÓDIGO DEL MODULO", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+                    PdfPCell cell5 =  new PdfPCell(new Phrase("TIC49999", FontFactory.getFont("Gill Sans MT", 9)));
+
+                    PdfPCell cell6 =  new PdfPCell(new Phrase("CICLO DE FORMACIÓN", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+                    PdfPCell cell7 =  new PdfPCell(new Phrase("Pregrado", FontFactory.getFont("Gill Sans MT", 9)));
+
+                    PdfPCell cell8 =  new PdfPCell(new Phrase("PROGRAMA", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+                    PdfPCell cell9 =  new PdfPCell(new Phrase("Ingeniería en Telecomunicaciones", FontFactory.getFont("Gill Sans MT", 9)));
+
+                    PdfPCell cell10 =  new PdfPCell(new Phrase("PROGRAMA", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+                    PdfPCell cell11 =  new PdfPCell(new Phrase("Ingeniería en Telecomunicaciones", FontFactory.getFont("Gill Sans MT", 9)));
+
+                    PdfPCell cell12 =  new PdfPCell(new Phrase("PROGRAMA", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+                    PdfPCell cell13 =  new PdfPCell(new Phrase("Ingeniería en Telecomunicaciones", FontFactory.getFont("Gill Sans MT", 9)));
+
+                    PdfPCell cell14 =  new PdfPCell(new Phrase("PROGRAMA", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD)));
+                    PdfPCell cell15 =  new PdfPCell(new Phrase("Ingeniería en Telecomunicaciones", FontFactory.getFont("Gill Sans MT", 9)));
+
+                    // Configurar celdas
+                    cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell6.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell7.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell8.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell9.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+//
+        // Agregar celdas a la tabla
+        table.addCell(cell1);
+        table.addCell(cell2);
+        table.addCell(cell3);
+        table.addCell(cell4);
+        table.addCell(cell5);
+        table.addCell(cell6);
+        table.addCell(cell7);
+        table.addCell(cell8);
+        table.addCell(cell9);
+//primera cell
+PdfPCell cell1 =  new PdfPCell(new Phrase("     I.                  DATOS BÁSICOS DEL MODULO", FontFactory.getFont("Gill Sans MT", 8, Font.BOLD, BaseColor.WHITE)));
