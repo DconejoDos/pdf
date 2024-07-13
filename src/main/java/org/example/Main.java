@@ -14,6 +14,20 @@ import static com.itextpdf.text.FontFactory.getFont;
 
 public class Main {
     public static void main(String[] args) {
+
+        PruebaDAO pruebaDAO = new PruebaDAO();
+
+        int idBuscado = 100; // Cambia este valor según necesites
+        Prueba prueba = pruebaDAO.obtenerPorId(idBuscado);
+        System.out.println(prueba.getId());
+
+        if (prueba != null) {
+            System.out.println("Registro encontrado: " + prueba);
+        } else {
+            System.out.println("No se encontró un registro con ID: " + idBuscado);
+        }
+
+
         int x  =1;
         for (int i = 0; i < x; i++) {
             Document document = new Document(PageSize.A4, 36, 36, 150, 36); // Establecer márgenes
